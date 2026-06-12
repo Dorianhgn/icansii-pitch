@@ -1,19 +1,18 @@
 import type { SlideState } from '../types';
 
-// The lit-screen iPhone glyph that emerges from the "I" (mockup variant E5).
-// Self-contained SVG: its own fills are immune to the parent's background-clip:text.
-const PHONE_SVG = `<svg class="hero-glyph" viewBox="0 0 60 120" aria-hidden="true">` +
-  `<defs><linearGradient id="heroScreen" x1="0" y1="0" x2="1" y2="1">` +
-  `<stop offset="0" stop-color="#cfe6ff"/><stop offset=".5" stop-color="#8fb8ff"/>` +
-  `<stop offset="1" stop-color="#6f8cff"/></linearGradient></defs>` +
-  `<rect x="3" y="3" width="54" height="114" rx="15" fill="none" stroke="#cfd6e6" stroke-width="4"/>` +
-  `<rect x="9" y="9" width="42" height="102" rx="9" fill="url(#heroScreen)"/>` +
-  `<rect x="22" y="10" width="16" height="6" rx="3" fill="#0a0e1a"/></svg>`;
+// The outline iPhone glyph from mockup E (tmp/title-mockups/title-e.png):
+// thin silver stroke, no fill, speaker slit — matches the "Phone" word color.
+const PHONE_SVG = `<svg class="hero-glyph" viewBox="0 0 24 40" aria-hidden="true" ` +
+  `fill="none" stroke="#cdd6ea" stroke-width="2">` +
+  `<rect x="2" y="2" width="20" height="36" rx="4"/>` +
+  `<line x1="9" y1="6" x2="15" y2="6"/></svg>`;
 
 // Owns the title overlay (#title-layer). Two modes:
 //  - hero  → animated "I CAN SII" → "iPhone CAN SII" reveal (slide 0)
 //  - plain → static <title-text>/<title-sub> for any other titled slide
 export class TitleHero {
+  private played = false;
+
   constructor(private readonly el: HTMLElement) {}
 
   render(slide: SlideState): void {
@@ -31,6 +30,10 @@ export class TitleHero {
         `<span class="hero-rest">&nbsp;CAN&nbsp;SII</span>` +
         `</div>` +
         (slide.subtitle ? `<div class="title-sub hero-sub">${slide.subtitle}</div>` : '');
+      // Coming back to slide 0 after the reveal already played: show the final
+      // state instantly (fresh children are first styled with .play present,
+      // so no transition runs).
+      if (this.played) this.el.classList.add('play');
       return;
     }
 
@@ -50,8 +53,17 @@ export class TitleHero {
   // (Re)start the reveal. No-op unless the hero is currently mounted.
   play(): void {
     if (!this.el.classList.contains('hero-mode')) return;
+    this.played = true;
     this.el.classList.remove('play');
     void this.el.offsetWidth; // force reflow so re-adding restarts the transitions
     this.el.classList.add('play');
+  }
+
+  // Advance-key hook: the first "next" press on the hero slide plays the
+  // reveal instead of navigating. Returns true when the press was consumed.
+  consumeAdvance(): boolean {
+    if (!this.el.classList.contains('hero-mode') || this.played) return false;
+    this.play();
+    return true;
   }
 }

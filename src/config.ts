@@ -43,6 +43,7 @@ export const TIMING = {
   borderCrossfadeMs: 600,
   framesMs: 800,
   cloudFadeMs: 900,
+  heroRevealMs: 700, // slide 0 "I CAN SII" → "iPhone CAN SII" master speed
 };
 
 // Cursor auto-hide after this idle time (ms)

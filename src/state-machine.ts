@@ -64,13 +64,10 @@ export function applyState(slide: SlideState, stage: Stage, lerp = true): void {
     stage.fullImageEl.classList.add('hidden');
   }
 
-  // Title overlay (hero on slide 0, plain otherwise). On navigation (lerp=true)
-  // replay the reveal; on the initial paint (lerp=false) main.ts triggers it
-  // once the loading curtain has lifted, so the animation isn't wasted.
+  // Title overlay (hero on slide 0, plain otherwise). The hero reveal is NOT
+  // played here: it waits for the presenter's first advance key (see
+  // bindKeyboard's beforeNext). Once played, render() shows the final state.
   stage.titleHero.render(slide);
-  if (slide.hero && lerp) {
-    requestAnimationFrame(() => stage.titleHero.play());
-  }
 }
 
 function showFullImage(el: HTMLElement, src: string): void {
@@ -91,14 +88,18 @@ const NEXT_KEYS = new Set(['ArrowRight', 'PageDown', ' ', 'Spacebar']);
 const PREV_KEYS = new Set(['ArrowLeft', 'PageUp']);
 
 // Wires keyboard navigation + fullscreen + a hold-to-show slide index helper.
+// `beforeNext` may consume an advance press (e.g. slide 0 plays its title
+// reveal on the first press; the next press actually navigates).
 export function bindKeyboard(
   nav: Navigator,
   onChange: (slide: SlideState) => void,
   indexEl: HTMLElement,
+  beforeNext?: () => boolean,
 ): void {
   window.addEventListener('keydown', (e) => {
     if (NEXT_KEYS.has(e.key)) {
       e.preventDefault();
+      if (beforeNext?.()) return;
       onChange(nav.next());
     } else if (PREV_KEYS.has(e.key)) {
       e.preventDefault();

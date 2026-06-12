@@ -1,6 +1,6 @@
 import './styles.css';
 import type { SceneData } from './types';
-import { ASSETS, CURSOR_IDLE_MS } from './config';
+import { ASSETS, CURSOR_IDLE_MS, TIMING } from './config';
 import { Renderer } from './scene/renderer';
 import { PointCloud } from './scene/PointCloud';
 import { Labels } from './scene/labels';
@@ -89,6 +89,8 @@ async function bootstrap(): Promise<void> {
   const border = new Border($('border'));
   const phoneFrames = new PhoneFrames($('frames-layer'));
   const titleHero = new TitleHero($('title-layer'));
+  // Master speed knob for the slide-0 title reveal (config.ts → CSS).
+  $('title-layer').style.setProperty('--hero-reveal-ms', `${TIMING.heroRevealMs}ms`);
 
   const stage: Stage = {
     pointCloud,
@@ -112,7 +114,10 @@ async function bootstrap(): Promise<void> {
   document.body.appendChild(indexEl);
 
   applyState(nav.current(), stage, false);
-  bindKeyboard(nav, (slide) => applyState(slide, stage, true), indexEl);
+  // First advance press on slide 0 plays the title reveal instead of moving on.
+  bindKeyboard(nav, (slide) => applyState(slide, stage, true), indexEl, () =>
+    titleHero.consumeAdvance(),
+  );
 
   setupCursorAutoHide();
 
@@ -121,9 +126,7 @@ async function bootstrap(): Promise<void> {
   const loading = $('loading');
   loading.classList.add('done');
   window.setTimeout(() => loading.classList.add('hidden'), 600);
-  // Play the hero reveal as the curtain fades (initial paint used lerp=false,
-  // so applyState left it collapsed for us to trigger here).
-  window.setTimeout(() => titleHero.play(), 350);
+  // The title stays "I CAN SII" — the reveal waits for the first advance key.
 }
 
 bootstrap().catch((err) => {
