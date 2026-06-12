@@ -21,8 +21,9 @@ export const SLIDES: SlideState[] = [
     cloud: { visible: false, colorState: 'neutral', dimmed: false },
     frames: 'hidden',
     showLabels: false,
+    hero: true,
     title: 'I CAN SII',
-    subtitle: 'je suis le téléphone',
+    subtitle: 'Pitch ton stage en 180 secondes',
   },
   {
     id: 1,

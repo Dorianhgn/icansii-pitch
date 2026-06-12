@@ -6,6 +6,7 @@ import { PointCloud } from './scene/PointCloud';
 import { Labels } from './scene/labels';
 import { Border } from './overlays/Border';
 import { PhoneFrames } from './overlays/PhoneFrames';
+import { TitleHero } from './overlays/TitleHero';
 import { SLIDES } from './slides';
 import { Navigator, applyState, bindKeyboard, type Stage } from './state-machine';
 
@@ -87,6 +88,7 @@ async function bootstrap(): Promise<void> {
 
   const border = new Border($('border'));
   const phoneFrames = new PhoneFrames($('frames-layer'));
+  const titleHero = new TitleHero($('title-layer'));
 
   const stage: Stage = {
     pointCloud,
@@ -94,7 +96,7 @@ async function bootstrap(): Promise<void> {
     border,
     phoneFrames,
     fullImageEl: $('full-image'),
-    titleEl: $('title-layer'),
+    titleHero,
   };
 
   // 3) Drive color/fade tweens every frame; camera orbit is independent.
@@ -119,6 +121,9 @@ async function bootstrap(): Promise<void> {
   const loading = $('loading');
   loading.classList.add('done');
   window.setTimeout(() => loading.classList.add('hidden'), 600);
+  // Play the hero reveal as the curtain fades (initial paint used lerp=false,
+  // so applyState left it collapsed for us to trigger here).
+  window.setTimeout(() => titleHero.play(), 350);
 }
 
 bootstrap().catch((err) => {

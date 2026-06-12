@@ -43,4 +43,6 @@ export interface SlideState {
   fullImage?: string; // slide 1 street image path
   title?: string; // slide 0 hero text
   subtitle?: string;
+  hero?: boolean; // slide 0 only — bespoke animated "iPhone CAN SII" reveal
+
 }

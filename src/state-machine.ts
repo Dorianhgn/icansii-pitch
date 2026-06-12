@@ -35,6 +35,7 @@ import type { PointCloud } from './scene/PointCloud';
 import type { Labels } from './scene/labels';
 import type { Border } from './overlays/Border';
 import type { PhoneFrames } from './overlays/PhoneFrames';
+import type { TitleHero } from './overlays/TitleHero';
 
 export interface Stage {
   pointCloud: PointCloud;
@@ -42,7 +43,7 @@ export interface Stage {
   border: Border;
   phoneFrames: PhoneFrames;
   fullImageEl: HTMLElement;
-  titleEl: HTMLElement;
+  titleHero: TitleHero;
 }
 
 export function applyState(slide: SlideState, stage: Stage, lerp = true): void {
@@ -63,14 +64,12 @@ export function applyState(slide: SlideState, stage: Stage, lerp = true): void {
     stage.fullImageEl.classList.add('hidden');
   }
 
-  // Hero title (slide 0).
-  if (slide.title) {
-    stage.titleEl.innerHTML = `<div class="title-text">${slide.title}</div>${
-      slide.subtitle ? `<div class="title-sub">${slide.subtitle}</div>` : ''
-    }`;
-    stage.titleEl.classList.remove('hidden');
-  } else {
-    stage.titleEl.classList.add('hidden');
+  // Title overlay (hero on slide 0, plain otherwise). On navigation (lerp=true)
+  // replay the reveal; on the initial paint (lerp=false) main.ts triggers it
+  // once the loading curtain has lifted, so the animation isn't wasted.
+  stage.titleHero.render(slide);
+  if (slide.hero && lerp) {
+    requestAnimationFrame(() => stage.titleHero.play());
   }
 }
 
