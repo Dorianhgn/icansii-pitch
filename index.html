@@ -1,0 +1,38 @@
+<!doctype html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>I CAN SII</title>
+    <link rel="stylesheet" href="/src/styles.css" />
+  </head>
+  <body>
+    <!-- Three.js canvas mounts here (persistent, always rendered) -->
+    <div id="canvas-root"></div>
+
+    <!-- CSS2D labels overlay (slide 5) -->
+    <div id="labels-root"></div>
+
+    <!-- DOM overlays: phone frames, pizza, full image, titles -->
+    <div id="overlay-root">
+      <div id="full-image" class="overlay-layer hidden"></div>
+      <div id="title-layer" class="overlay-layer hidden"></div>
+      <div id="frames-layer" class="overlay-layer"></div>
+      <div id="pizza-layer" class="overlay-layer hidden"></div>
+    </div>
+
+    <!-- Pulsing chip border -->
+    <div id="border"></div>
+
+    <!-- Loading screen, removed once everything is preloaded -->
+    <div id="loading">
+      <div class="loading-inner">
+        <div class="loading-title">I CAN SII</div>
+        <div class="loading-bar"><div class="loading-bar-fill"></div></div>
+        <div class="loading-status">chargement…</div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

@@ -1,0 +1,82 @@
+import type { SlideState } from './types';
+import { ASSETS } from './config';
+
+// Ordered states (spec §5). The narrative climbs in intelligence:
+// raw 3D → obstacles (geometry) → understanding (AI) → decision (CPU → belt).
+export const SLIDES: SlideState[] = [
+  {
+    id: 0,
+    name: 'Titre',
+    chip: 'neutral',
+    cloud: { visible: false, colorState: 'neutral', dimmed: false },
+    frames: 'hidden',
+    showLabels: false,
+    showPizza: false,
+    title: 'I CAN SII',
+    subtitle: 'je suis le téléphone',
+  },
+  {
+    id: 1,
+    name: 'Le problème',
+    chip: 'neutral',
+    cloud: { visible: false, colorState: 'neutral', dimmed: false },
+    frames: 'hidden',
+    showLabels: false,
+    showPizza: false,
+    fullImage: ASSETS.street,
+  },
+  {
+    id: 2,
+    name: 'Les capteurs',
+    chip: 'neutral',
+    cloud: { visible: false, colorState: 'neutral', dimmed: false },
+    frames: 'center',
+    showLabels: false,
+    showPizza: false,
+  },
+  {
+    id: 3,
+    name: 'Reconstruction',
+    chip: 'gpu',
+    cloud: { visible: true, colorState: 'neutral', dimmed: false },
+    frames: 'corner',
+    showLabels: false,
+    showPizza: false,
+  },
+  {
+    id: 4,
+    name: 'Obstacles',
+    chip: 'gpu',
+    cloud: { visible: true, colorState: 'obstacles', dimmed: false },
+    frames: 'corner',
+    showLabels: false,
+    showPizza: false,
+  },
+  {
+    id: 5,
+    name: 'Compréhension',
+    chip: 'ane',
+    cloud: { visible: true, colorState: 'segmentation', dimmed: false },
+    frames: 'corner',
+    showLabels: true,
+    showPizza: false,
+  },
+  {
+    id: 6,
+    name: 'Décision',
+    chip: 'cpu',
+    cloud: { visible: true, colorState: 'segmentation', dimmed: true },
+    frames: 'front',
+    showLabels: false,
+    showPizza: true,
+  },
+  {
+    id: 7,
+    name: 'Verticalité',
+    chip: 'neutral',
+    cloud: { visible: false, colorState: 'segmentation', dimmed: false },
+    frames: 'triple',
+    showLabels: false,
+    showPizza: true,
+  },
+];
