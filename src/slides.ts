@@ -1,6 +1,16 @@
 import type { SlideState } from './types';
 import { ASSETS } from './config';
 
+// iPhone screenshot sets reused across slides.
+const SENSORS = [
+  { src: ASSETS.rgb, caption: 'RGB' },
+  { src: ASSETS.depth, caption: 'Profondeur' },
+];
+const UNDERSTAND = [
+  { src: ASSETS.rgbYolo, caption: 'Détection' }, // RGB + YOLO on the AI slide
+  { src: ASSETS.depth, caption: 'Profondeur' },
+];
+
 // Ordered states (spec §5). The narrative climbs in intelligence:
 // raw 3D → obstacles (geometry) → understanding (AI) → decision (CPU → belt).
 export const SLIDES: SlideState[] = [
@@ -11,7 +21,6 @@ export const SLIDES: SlideState[] = [
     cloud: { visible: false, colorState: 'neutral', dimmed: false },
     frames: 'hidden',
     showLabels: false,
-    showPizza: false,
     title: 'I CAN SII',
     subtitle: 'je suis le téléphone',
   },
@@ -22,7 +31,6 @@ export const SLIDES: SlideState[] = [
     cloud: { visible: false, colorState: 'neutral', dimmed: false },
     frames: 'hidden',
     showLabels: false,
-    showPizza: false,
     fullImage: ASSETS.street,
   },
   {
@@ -31,8 +39,8 @@ export const SLIDES: SlideState[] = [
     chip: 'neutral',
     cloud: { visible: false, colorState: 'neutral', dimmed: false },
     frames: 'center',
+    phones: SENSORS,
     showLabels: false,
-    showPizza: false,
   },
   {
     id: 3,
@@ -40,8 +48,8 @@ export const SLIDES: SlideState[] = [
     chip: 'gpu',
     cloud: { visible: true, colorState: 'neutral', dimmed: false },
     frames: 'corner',
+    phones: SENSORS,
     showLabels: false,
-    showPizza: false,
   },
   {
     id: 4,
@@ -49,8 +57,8 @@ export const SLIDES: SlideState[] = [
     chip: 'gpu',
     cloud: { visible: true, colorState: 'obstacles', dimmed: false },
     frames: 'corner',
+    phones: SENSORS,
     showLabels: false,
-    showPizza: false,
   },
   {
     id: 5,
@@ -58,17 +66,17 @@ export const SLIDES: SlideState[] = [
     chip: 'ane',
     cloud: { visible: true, colorState: 'segmentation', dimmed: false },
     frames: 'corner',
+    phones: UNDERSTAND,
     showLabels: true,
-    showPizza: false,
   },
   {
     id: 6,
     name: 'Décision',
     chip: 'cpu',
     cloud: { visible: true, colorState: 'segmentation', dimmed: true },
-    frames: 'front',
+    frames: 'single',
+    phones: [{ src: ASSETS.allPizza, caption: 'Pizza' }],
     showLabels: false,
-    showPizza: true,
   },
   {
     id: 7,
@@ -76,7 +84,11 @@ export const SLIDES: SlideState[] = [
     chip: 'neutral',
     cloud: { visible: false, colorState: 'segmentation', dimmed: false },
     frames: 'triple',
+    phones: [
+      { src: ASSETS.lowPizza, caption: 'Pieds' },
+      { src: ASSETS.torsoPizza, caption: 'Torse' },
+      { src: ASSETS.headPizza, caption: 'Tête' },
+    ],
     showLabels: false,
-    showPizza: true,
   },
 ];

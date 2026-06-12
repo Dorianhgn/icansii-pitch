@@ -6,7 +6,6 @@ import { PointCloud } from './scene/PointCloud';
 import { Labels } from './scene/labels';
 import { Border } from './overlays/Border';
 import { PhoneFrames } from './overlays/PhoneFrames';
-import { PizzaFan } from './overlays/PizzaFan';
 import { SLIDES } from './slides';
 import { Navigator, applyState, bindKeyboard, type Stage } from './state-machine';
 
@@ -59,11 +58,19 @@ async function bootstrap(): Promise<void> {
   // 1) Preload EVERYTHING before enabling navigation (spec §9).
   setLoadProgress(0.05, 'chargement de la scène…');
   const scenePromise = loadScene();
-  const imagePromise = Promise.all([
-    preloadImage(ASSETS.rgb),
-    preloadImage(ASSETS.depth),
-    preloadImage(ASSETS.street),
-  ]);
+  const imagePromise = Promise.all(
+    [
+      ASSETS.iphone,
+      ASSETS.rgb,
+      ASSETS.rgbYolo,
+      ASSETS.depth,
+      ASSETS.allPizza,
+      ASSETS.lowPizza,
+      ASSETS.torsoPizza,
+      ASSETS.headPizza,
+      ASSETS.street,
+    ].map(preloadImage),
+  );
 
   const data = await scenePromise;
   setLoadProgress(0.7, 'préparation du nuage…');
@@ -79,19 +86,13 @@ async function bootstrap(): Promise<void> {
   renderer.add(labels.group);
 
   const border = new Border($('border'));
-  const phoneFrames = new PhoneFrames($('frames-layer'), [
-    { src: ASSETS.rgb, caption: 'RGB' },
-    { src: ASSETS.depth, caption: 'Profondeur' },
-    { src: ASSETS.rgb, caption: 'Tête' },
-  ]);
-  const pizza = new PizzaFan($('pizza-layer'));
+  const phoneFrames = new PhoneFrames($('frames-layer'));
 
   const stage: Stage = {
     pointCloud,
     labels,
     border,
     phoneFrames,
-    pizza,
     fullImageEl: $('full-image'),
     titleEl: $('title-layer'),
   };

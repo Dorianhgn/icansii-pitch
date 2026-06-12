@@ -51,7 +51,10 @@ export class PointCloud {
 
     this.displayed = new Float32Array(n * 3);
     this.displayed.set(this.colorBuffers.neutral);
-    this.colorAttr = new THREE.Float32BufferAttribute(this.displayed, 3);
+    // NB: plain BufferAttribute shares the array by reference. Float32BufferAttribute
+    // would COPY it, detaching the GPU buffer from `this.displayed` so per-frame color
+    // lerps would never be uploaded (every state would render as the initial neutral).
+    this.colorAttr = new THREE.BufferAttribute(this.displayed, 3);
     this.colorAttr.setUsage(THREE.DynamicDrawUsage);
     this.geometry.setAttribute('color', this.colorAttr);
 

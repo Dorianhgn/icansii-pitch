@@ -16,6 +16,6 @@ export class Border {
     // CSS transition on --chip-color crossfades the color smoothly.
     this.root.style.setProperty('--chip-color', CHIP_CSS[chip]);
     // brighter glow for an active chip, dim for neutral
-    this.root.style.setProperty('--chip-glow', chip === 'neutral' ? '0.22' : '0.6');
+    this.root.style.setProperty('--chip-glow', chip === 'neutral' ? '0.4' : '1');
   }
 }

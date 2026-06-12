@@ -35,14 +35,12 @@ import type { PointCloud } from './scene/PointCloud';
 import type { Labels } from './scene/labels';
 import type { Border } from './overlays/Border';
 import type { PhoneFrames } from './overlays/PhoneFrames';
-import type { PizzaFan } from './overlays/PizzaFan';
 
 export interface Stage {
   pointCloud: PointCloud;
   labels: Labels;
   border: Border;
   phoneFrames: PhoneFrames;
-  pizza: PizzaFan;
   fullImageEl: HTMLElement;
   titleEl: HTMLElement;
 }
@@ -56,10 +54,7 @@ export function applyState(slide: SlideState, stage: Stage, lerp = true): void {
 
   stage.labels.setVisible(slide.showLabels);
 
-  stage.phoneFrames.setLayout(slide.frames);
-
-  stage.pizza.setVisible(slide.showPizza);
-  stage.pizza.setOrientation(slide.id === 7 ? 'vertical' : 'horizontal');
+  stage.phoneFrames.apply(slide.phones ?? [], slide.frames);
 
   // Full-screen problem image (slide 1), with graceful fallback if missing.
   if (slide.fullImage) {

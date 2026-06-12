@@ -48,10 +48,17 @@ export const TIMING = {
 // Cursor auto-hide after this idle time (ms)
 export const CURSOR_IDLE_MS = 2500;
 
-// Asset paths (served from public/)
+// Asset paths (served from public/). NB: filenames are UPPERCASE .PNG on disk —
+// case matters on Linux/CI even if macOS resolves case-insensitively.
 export const ASSETS = {
   scene: 'assets/scene/scene.json',
-  rgb: 'assets/images/rgb.png',
-  depth: 'assets/images/depth.png',
-  street: 'assets/images/street.jpg', // may not exist yet → graceful fallback
+  iphone: 'assets/iphone/iphone.png', // transparent-screen bezel overlay
+  rgb: 'assets/images/rgb.PNG',
+  rgbYolo: 'assets/images/rgb-yolo.PNG', // RGB + YOLO detections (slide 5)
+  depth: 'assets/images/depth.PNG',
+  allPizza: 'assets/images/all-pizza.PNG', // combined radar (slide 6)
+  lowPizza: 'assets/images/low-pizza.PNG', // vertical split (slide 7)
+  torsoPizza: 'assets/images/torso-pizza.PNG',
+  headPizza: 'assets/images/head-pizza.PNG',
+  street: 'assets/images/street.jpg', // not provided yet → graceful fallback
 };

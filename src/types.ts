@@ -23,7 +23,14 @@ export interface SceneData {
 }
 
 // ---- Slide / state machine ----
-export type FramesLayout = 'hidden' | 'center' | 'corner' | 'front' | 'triple';
+export type FramesLayout = 'hidden' | 'center' | 'corner' | 'front' | 'single' | 'triple';
+
+// One iPhone mockup's content. The screenshot sits behind the transparent
+// iphone.png bezel; caption (optional) renders below the frame.
+export interface PhoneSpec {
+  src: string;
+  caption?: string;
+}
 
 export interface SlideState {
   id: number;
@@ -31,8 +38,8 @@ export interface SlideState {
   chip: ChipColor;
   cloud: { visible: boolean; colorState: ColorState; dimmed: boolean };
   frames: FramesLayout;
+  phones?: PhoneSpec[]; // screenshots shown in the iPhone frames for this slide
   showLabels: boolean;
-  showPizza: boolean;
   fullImage?: string; // slide 1 street image path
   title?: string; // slide 0 hero text
   subtitle?: string;
