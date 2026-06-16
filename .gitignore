@@ -144,3 +144,5 @@ vite.config.ts.timestamp-*
 
 # Temporary files
 tmp/
+
+.DS_Store
